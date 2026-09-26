@@ -177,7 +177,7 @@
 .field-input { min-height: 3.25rem; width: 100%; border: 0; border-bottom: 1px solid var(--border); background: transparent; padding: .5rem .1rem; font-family: var(--font-display); font-size: 1.15rem; outline: none; transition: border-color .2s; }
 .field-input:focus { border-color: var(--primary); }
 .choice { min-width: 0; cursor: pointer; }
-.choice-inner { display: grid; min-height: 3.5rem; place-items: center; border: 1px solid var(--border); padding: .75rem; text-align: center; font-family: var(--sans); font-size: .62rem; text-transform: uppercase; letter-spacing: .1em; transition: .2s; }
+.choice-inner { display: grid; min-height: 3.5rem; place-items: center; border: 1px solid var(--border); padding: .75rem; text-align: center; font-family: var(--font-sans); font-size: .62rem; text-transform: uppercase; letter-spacing: .1em; transition: .2s; }
 .choice input:checked + .choice-inner { border-color: var(--primary); background: var(--primary); color: var(--primary-foreground); }
 @keyframes invitation-reveal { from { opacity: 0; transform: scale(.985); } to { opacity: 1; transform: scale(1); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } .reveal { opacity: 1; transform: none; } }

@@ -96,10 +96,10 @@ function FloatingNavigation({ menuOpen, setMenuOpen, scrollTo }: { menuOpen: boo
       <div className={`fixed inset-0 z-30 grid place-items-center bg-foreground text-background transition duration-500 ${menuOpen ? "visible opacity-100" : "invisible opacity-0"}`}>
         <nav aria-label="Invitation sections" className="flex flex-col items-center gap-5">
           {navItems.map(([label, id], index) => (
-            <button key={id} onClick={() => scrollTo(id)} className="group font-display text-4xl sm:text-5xl">
+            <Button key={id} variant="ghost" onClick={() => scrollTo(id)} className="group h-auto min-h-12 font-display text-4xl normal-case tracking-normal text-background hover:text-champagne sm:text-5xl">
               <span className="mr-4 align-middle font-sans text-[0.55rem] tracking-[0.2em] text-champagne">0{index + 1}</span>
               <span className="border-b border-transparent transition group-hover:border-champagne">{label}</span>
-            </button>
+            </Button>
           ))}
         </nav>
       </div>
@@ -194,7 +194,7 @@ function PhotoGallery() {
     return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", onKey); };
   }, [active, change]);
   return (
-    <section id="gallery" className="px-3 py-24 sm:px-8 sm:py-32"><SectionHeading eyebrow="Collected moments">The gallery</SectionHeading><div className="mx-auto mt-14 grid max-w-6xl grid-cols-2 gap-2 sm:gap-4 md:grid-cols-4">{wedding.images.gallery.map((image, index) => <button key={image} onClick={() => setActive(index)} className={`reveal group overflow-hidden ${index === 0 || index === 5 ? "row-span-2" : ""}`} aria-label={`Open wedding photograph ${index + 1}`}><img src={image} alt="" width={1000} height={1000} loading="lazy" className={`w-full object-cover transition duration-700 group-hover:scale-[1.03] ${index === 0 || index === 5 ? "h-full min-h-72" : "aspect-square"}`} /></button>)}</div>
+    <section id="gallery" className="px-3 py-24 sm:px-8 sm:py-32"><SectionHeading eyebrow="Collected moments">The gallery</SectionHeading><div className="mx-auto mt-14 grid max-w-6xl grid-cols-2 gap-2 sm:gap-4 md:grid-cols-4">{wedding.images.gallery.map((image, index) => <Button key={image} variant="ghost" onClick={() => setActive(index)} className={`reveal group h-auto min-h-0 overflow-hidden border-0 p-0 ${index === 0 || index === 5 ? "row-span-2" : ""}`} aria-label={`Open wedding photograph ${index + 1}`}><img src={image} alt="" width={1000} height={1000} loading="lazy" className={`w-full object-cover transition duration-700 group-hover:scale-[1.03] ${index === 0 || index === 5 ? "h-full min-h-72" : "aspect-square"}`} /></Button>)}</div>
       {active !== null && <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/95 p-4" role="dialog" aria-modal="true" aria-label={`Wedding photograph ${active + 1} of ${wedding.images.gallery.length}`}><Button variant="ghost" onClick={() => setActive(null)} className="absolute right-3 top-3 z-10 h-12 w-12 p-0 text-ivory" aria-label="Close gallery"><X /></Button><Button variant="ghost" onClick={() => change(-1)} className="absolute left-2 h-14 w-12 p-0 text-ivory sm:left-6" aria-label="Previous photograph"><ChevronLeft /></Button><img src={wedding.images.gallery[active]} alt={`Wedding moment ${active + 1}`} className="max-h-[85vh] max-w-[82vw] object-contain" /><Button variant="ghost" onClick={() => change(1)} className="absolute right-2 h-14 w-12 p-0 text-ivory sm:right-6" aria-label="Next photograph"><ChevronRight /></Button><p className="absolute bottom-5 font-sans text-[0.6rem] tracking-[0.2em] text-ivory/70">{active + 1} / {wedding.images.gallery.length}</p></div>}
     </section>
   );
