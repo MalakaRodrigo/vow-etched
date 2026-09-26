@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep all editable invitation content in `src/data/wedding.ts`; presentation components consume this single source so future real details stay consistent.
