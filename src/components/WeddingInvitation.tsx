@@ -1,7 +1,9 @@
-import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { ChevronLeft, ChevronRight, Heart, MapPin, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { wedding } from "@/data/wedding";
+import { type RsvpInput } from "@/lib/rsvp";
+import { submitRsvp } from "@/server-fns/rsvp";
 
 const navItems = [
   ["Home", "home"], ["Story", "story"], ["Details", "details"],
@@ -215,18 +217,37 @@ function Venue() {
 
 function Rsvp() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const mountedAt = useRef(Date.now());
+  const formRef = useRef<HTMLFormElement>(null);
+  const thanksRef = useRef<HTMLDivElement>(null);
+  const firstPane = useRef(true);
+
+  // The invitation's scroll observer only registers .reveal elements that
+  // exist when the cover opens; panes swapped in later (the thank-you note
+  // after a successful submit, or the form after "Edit response") would stay
+  // at opacity 0 forever, so reveal them here once they mount.
+  useEffect(() => {
+    if (firstPane.current) { firstPane.current = false; return; }
+    const pane = submitted ? thanksRef.current : formRef.current;
+    if (!pane) return;
+    const frame = requestAnimationFrame(() => pane.classList.add("is-visible"));
+    return () => cancelAnimationFrame(frame);
+  }, [submitted]);
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); const form = new FormData(event.currentTarget);
     if (!String(form.get("name") ?? "").trim() || !form.get("attendance")) { setError("Please add your name and select whether you can attend."); return; }
-    setError(""); setSubmitted(true);
+    const payload: RsvpInput = { name: String(form.get("name") ?? ""), guests: Number(form.get("guests") ?? 1), attendance: form.get("attendance") === "decline" ? "decline" : "accept", dietary: String(form.get("dietary") ?? ""), message: String(form.get("message") ?? ""), honeypot: String(form.get("website") ?? ""), elapsedMs: Date.now() - mountedAt.current };
+    setError(""); setSubmitting(true);
+    try { const result = await submitRsvp({ data: payload }); if (result.ok) { setSubmitted(true); } else { setError(result.message); } } catch { setError("We couldn't save your reply just now. Please try again in a moment."); } finally { setSubmitting(false); }
   };
   return (
-    <section id="rsvp" className="px-5 py-24 sm:px-8 sm:py-32"><div className="mx-auto max-w-2xl"><SectionHeading eyebrow="Kindly reply by 1 July 2027">Will you celebrate with us?</SectionHeading>{submitted ? <div className="reveal mt-14 border-y border-border py-16 text-center" role="status"><Heart className="mx-auto text-primary" strokeWidth={1} /><h3 className="mt-6 font-display text-3xl">Thank you for your reply.</h3><p className="mt-3 text-sm text-muted-foreground">Your response has been noted for this preview.</p><Button variant="ghost" className="mt-6" onClick={() => setSubmitted(false)}>Edit response</Button></div> : <form onSubmit={submit} className="reveal mt-14 space-y-8" noValidate><div className="grid gap-8 sm:grid-cols-2"><Field label="Full name" name="name" required /><label className="block"><span className="field-label">Number of guests</span><select name="guests" className="field-input" defaultValue="1">{[1, 2, 3, 4].map(n => <option key={n}>{n}</option>)}</select></label></div><fieldset><legend className="field-label mb-4">Attendance</legend><div className="grid grid-cols-2 gap-3"><label className="choice"><input type="radio" name="attendance" value="accept" className="peer sr-only" /><span className="choice-inner">Joyfully accept</span></label><label className="choice"><input type="radio" name="attendance" value="decline" className="peer sr-only" /><span className="choice-inner">Regretfully decline</span></label></div></fieldset><Field label="Dietary requirements (optional)" name="dietary" /><label className="block"><span className="field-label">A message for us (optional)</span><textarea name="message" rows={3} className="field-input resize-none" /></label>{error && <p className="text-center text-sm text-destructive" role="alert">{error}</p>}<div className="text-center"><Button type="submit" className="min-w-48">Send RSVP</Button></div></form>}</div></section>
+    <section id="rsvp" className="px-5 py-24 sm:px-8 sm:py-32"><div className="mx-auto max-w-2xl"><SectionHeading eyebrow="Kindly reply by 20 Nov 2026">Will you celebrate with us?</SectionHeading>{submitted ? <div ref={thanksRef} className="reveal mt-14 border-y border-border py-16 text-center" role="status"><Heart className="mx-auto text-primary" strokeWidth={1} /><h3 className="mt-6 font-display text-3xl">Thank you for your reply.</h3><p className="mt-3 text-sm text-muted-foreground">Your response has been recorded.</p><Button variant="ghost" className="mt-6" onClick={() => setSubmitted(false)}>Edit response</Button></div> : <form ref={formRef} onSubmit={submit} className="reveal mt-14 space-y-8" noValidate><div className="grid gap-8 sm:grid-cols-2"><Field label="Full name" name="name" required maxLength={120} /><label className="block"><span className="field-label">Number of guests</span><select name="guests" className="field-input" defaultValue="1">{[1, 2, 3, 4].map(n => <option key={n}>{n}</option>)}</select></label></div><fieldset><legend className="field-label mb-4">Attendance</legend><div className="grid grid-cols-2 gap-3"><label className="choice"><input type="radio" name="attendance" value="accept" className="peer sr-only" /><span className="choice-inner">Joyfully accept</span></label><label className="choice"><input type="radio" name="attendance" value="decline" className="peer sr-only" /><span className="choice-inner">Regretfully decline</span></label></div></fieldset><Field label="Dietary requirements (optional)" name="dietary" maxLength={500} /><label className="block"><span className="field-label">A message for us (optional)</span><textarea name="message" rows={3} className="field-input resize-none" maxLength={2000} /></label><label className="hidden" aria-hidden="true"><input name="website" tabIndex={-1} autoComplete="off" /></label>{error && <p className="text-center text-sm text-destructive" role="alert">{error}</p>}<div className="text-center"><Button type="submit" className="min-w-48" disabled={submitting}>{submitting ? "Sending…" : "Send RSVP"}</Button></div></form>}</div></section>
   );
 }
 
-function Field({ label, name, required }: { label: string; name: string; required?: boolean }) { return <label className="block"><span className="field-label">{label}</span><input name={name} required={required} className="field-input" /></label>; }
+function Field({ label, name, required, maxLength }: { label: string; name: string; required?: boolean; maxLength?: number }) { return <label className="block"><span className="field-label">{label}</span><input name={name} required={required} maxLength={maxLength} className="field-input" /></label>; }
 
 function ClosingSection() {
   return <><section className="relative min-h-[78svh] bg-foreground"><img src={wedding.images.hero} alt="" width={1408} height={1808} loading="lazy" className="absolute inset-0 h-full w-full object-cover object-bottom opacity-35" /><div className="hero-shade absolute inset-0" /><div className="relative flex min-h-[78svh] flex-col items-center justify-center px-5 text-center text-ivory"><p className="font-display text-4xl italic leading-tight sm:text-6xl">We can’t wait<br />to celebrate with you.</p><div className="my-10 h-12 w-px bg-champagne" /><p className="font-display text-5xl">{wedding.couple.initials}</p><p className="mt-5 font-sans text-[0.62rem] uppercase tracking-[0.28em]">{wedding.date.display}</p></div></section><footer className="flex items-center justify-center gap-2 bg-foreground py-7 font-sans text-[0.58rem] uppercase tracking-[0.2em] text-ivory/60">Made with <Heart size={11} fill="currentColor" aria-label="love" /></footer></>;

@@ -378,6 +378,73 @@ This project was built with [Lovable](https://lovable.dev).
 
 Continue developing this project in the [Lovable editor](https://lovable.dev/projects/8b670994-3640-4f14-87d2-b78baa483eda).
 
+
+## RSVP backend (Supabase)
+
+RSVP responses are stored in a Supabase Postgres table through a TanStack Start
+server function (`submitRsvp` in `src/server-fns/rsvp.ts`), which re-validates
+every submission with the shared zod schema in `src/lib/rsvp.ts` before
+inserting. The browser is never trusted, and guests always get a graceful
+error message if saving fails.
+
+### 1. Create the table
+
+In your Supabase project's SQL editor, run:
+
+```sql
+create table public.rsvps (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  guests integer not null check (guests between 1 and 4),
+  attendance text not null check (attendance in ('accept', 'decline')),
+  dietary text not null default '',
+  message text not null default '',
+  created_at timestamptz not null default now()
+);
+
+alter table public.rsvps enable row level security;
+
+-- Anyone may add a reply, but the public key cannot read, update,
+-- or delete anything.
+create policy "insert rsvps"
+  on public.rsvps
+  for insert
+  to anon
+  with check (true);
+```
+
+### 2. Configure the app
+
+Fill in the committed `.env` file:
+
+```env
+DEV_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+DEV_SUPABASE_ANON_KEY=YOUR_ANON_OR_PUBLISHABLE_KEY
+```
+
+Commit `.env` — Lovable reads `VITE_*` values from it when building previews
+and published releases. These values are embedded in the bundle and safe to be
+public; the insert-only RLS policy above is what protects the data.
+
+### 3. Track responses
+
+Open the Supabase **Table Editor → rsvps** to browse, filter, and export
+responses as CSV. A quick headcount query:
+
+```sql
+select attendance, sum(guests) as heads
+from public.rsvps
+group by attendance;
+```
+
+Notes:
+
+* Anti-spam: a hidden honeypot field plus a minimum fill-time check silently
+  drops bot submissions. There is intentionally no authentication — this is a
+  public wedding form.
+* Without `.env` values the form still works but replies an explanatory
+  "not connected yet" message instead of storing anything.
+
 - **Ship faster**: describe what you want to build and Lovable handles the code.
 - **Stay in sync**: every change made in Lovable is committed straight to this repository.
 - **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
