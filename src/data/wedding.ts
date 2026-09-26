@@ -12,49 +12,48 @@ import galleryB3 from "@/assets/gallery/b-3.jpg";
 import galleryB4 from "@/assets/gallery/b-4.jpg";
 
 export const wedding = {
-  couple: { first: "Amaya", second: "Dilan", initials: "A · D" },
+  couple: { first: "Randini", second: "Malaka", initials: "R · M" },
   date: {
-    iso: "2027-08-22T15:30:00+05:30",
-    display: "22 August 2027",
-    short: "22 · 08 · 27",
+    iso: "2026-12-03T15:30:00+05:30",
+    display: "3 December 2026",
+    short: "03 · 12 · 26",
   },
   venue: {
-    name: "The Ivory House",
-    address: "138 Wakwella Road, Galle, Sri Lanka",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Galle+Sri+Lanka",
+    name: "The Grand Walawwa",
+    address: "190/8 Kandy Rd, Kegalle, Sri Lanka",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=The+Grand+Walawwa,+Kegalle,+Sri+Lanka",
   },
   story:
-    "A chance meeting over coffee became long walks, shared dreams, and a love that felt quietly like home. Seven years later, beneath the rain trees where so many memories were made, Dilan asked Amaya to begin their next chapter together.",
+    "A casual conversation at an office Halloween party became shared photos on WhatsApp, longer conversations, and a connection that quietly grew into something more. In November 2024, what began as an ordinary moment became the beginning of our story, and now, beneath the rain trees where so many memories were made, Malaka asked Randini to begin their next chapter together.",
   events: [
     {
       eyebrow: "The solemn moment",
       name: "Wedding Ceremony",
-      date: "Sunday, 22 August 2027",
+      date: "Thursday, 03 December 2026",
       time: "3:30 in the afternoon",
-      venue: "The Garden Pavilion",
-      address: "The Ivory House, Galle",
+      venue: "St. Mary's Church",
+      address: "Kegalle",
     },
     {
       eyebrow: "Dinner & dancing",
       name: "Evening Reception",
-      date: "Sunday, 22 August 2027",
+      date: "Thursday, 03 December 2026",
       time: "6:30 in the evening",
-      venue: "The Grand Verandah",
-      address: "The Ivory House, Galle",
+      venue: "THE GALSS HOUSE",
+      address: "The Grand Walawwa, Kegalle",
     },
   ],
   timeline: [
-    { label: "We met", value: "2020" },
-    { label: "The beginning", value: "2021" },
-    { label: "The proposal", value: "2026" },
-    { label: "Our wedding", value: "2027" },
+    { label: "We met", value: "November, 2024" },
+    { label: "Our wedding", value: "December, 2026" },
   ],
   schedule: [
-    { time: "3:30 PM", title: "Ceremony", note: "Garden Pavilion" },
-    { time: "4:30 PM", title: "Poruwa Ceremony", note: "The East Lawn" },
-    { time: "6:30 PM", title: "Reception", note: "Grand Verandah" },
-    { time: "8:00 PM", title: "Dinner", note: "Under the rain trees" },
+    { time: "3:30 PM", title: "Holy Mass", note: "St. Mary's Church, Kegalle" },
+    { time: "5:30 PM", title: "Poruwa Ceremony", note: "The Glass House of Grand Walawwa" },
+    { time: "6:30 PM", title: "Reception", note: "The Glass House of Grand Walawwa" },
+    { time: "8:00 PM", title: "Dinner", note: "The Glass House of Grand Walawwa" },
   ],
+
   images: {
     hero: heroImage,
     story: storyImage,

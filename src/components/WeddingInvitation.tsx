@@ -9,7 +9,7 @@ const navItems = [
 ] as const;
 
 function Monogram() {
-  return <span className="font-display text-2xl italic" aria-label={`${wedding.couple.first} and ${wedding.couple.second}`}>A<span className="mx-1 text-accent">&</span>D</span>;
+  return <span className="font-display text-2xl italic" aria-label={`${wedding.couple.first} and ${wedding.couple.second}`}>R<span className="mx-1 text-accent">&</span>M</span>;
 }
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
@@ -110,7 +110,7 @@ function FloatingNavigation({ menuOpen, setMenuOpen, scrollTo }: { menuOpen: boo
 function HeroSection() {
   return (
     <section id="home" className="relative min-h-[100svh] bg-foreground">
-      <img src={wedding.images.hero} alt="Amaya and Dilan walking together in a sunlit garden" width={1408} height={1808} className="absolute inset-0 h-full w-full object-cover object-[52%_center] opacity-75" fetchPriority="high" />
+      <img src={wedding.images.hero} alt="Randini and Malaka walking together in a sunlit garden" width={1408} height={1808} className="absolute inset-0 h-full w-full object-cover object-[52%_center] opacity-75" fetchPriority="high" />
       <div className="hero-shade absolute inset-0" />
       <div className="relative flex min-h-[100svh] flex-col items-center justify-between px-5 py-24 text-center text-ivory sm:py-28">
         <p className="font-sans text-[0.62rem] uppercase tracking-[0.3em]">Together with their families</p>
@@ -121,7 +121,7 @@ function HeroSection() {
           <p className="mx-auto mt-10 max-w-xs font-display text-xl italic leading-relaxed">We invite you to celebrate our wedding</p>
         </div>
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 font-sans text-[0.6rem] uppercase tracking-[0.24em]">
-          <span className="h-px w-10 bg-champagne/70" /><span>{wedding.date.display}<br />{wedding.venue.name}, Galle</span><span className="h-px w-10 bg-champagne/70" />
+          <span className="h-px w-10 bg-champagne/70" /><span>{wedding.date.display}<br />{wedding.venue.name}, Kegalle</span><span className="h-px w-10 bg-champagne/70" />
         </div>
       </div>
     </section>
@@ -151,15 +151,24 @@ function OurStory() {
       <div className="mx-auto grid max-w-6xl items-center gap-14 md:grid-cols-[1.05fr_.95fr] md:gap-20">
         <div className="reveal relative mx-auto w-[88%] max-w-md md:w-full">
           <div className="absolute -left-4 -top-4 h-full w-full border border-accent" />
-          <img src={wedding.images.story} alt="Amaya and Dilan together beside the manor windows" width={1408} height={1712} loading="lazy" className="relative aspect-[4/5] w-full object-cover" />
-          <p className="absolute -bottom-7 -right-2 font-display text-7xl italic text-primary/20">A&D</p>
+          <img src={wedding.images.story} alt="Randini and Malaka together beside the manor windows" width={1408} height={1712} loading="lazy" className="relative aspect-[4/5] w-full object-cover" />
+          <p className="absolute -bottom-7 -right-2 font-display text-7xl italic text-primary/20">R&M</p>
         </div>
         <div className="reveal text-center md:text-left">
           <Eyebrow>How it all began</Eyebrow>
           <h2 className="font-display text-5xl font-normal sm:text-6xl">Our story</h2>
           <p className="mx-auto mt-7 max-w-lg font-display text-lg italic leading-8 text-muted-foreground md:mx-0">{wedding.story}</p>
-          <div className="mt-12 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-border pt-8 sm:grid-cols-4">
-            {wedding.timeline.map((item) => <div key={item.label}><span className="block font-display text-2xl text-primary">{item.value}</span><span className="mt-1 block font-sans text-[0.55rem] uppercase tracking-[0.17em] text-muted-foreground">{item.label}</span></div>)}
+          <div className="mt-12 flex justify-center gap-16 border-t border-border pt-8">
+            {wedding.timeline.map((item) => (
+              <div key={item.label} className="text-center">
+                <span className="block font-display text-2xl text-primary">
+                  {item.value}
+                </span>
+                <span className="mt-1 block font-sans text-[0.55rem] uppercase tracking-[0.17em] text-muted-foreground">
+                  {item.label}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -201,7 +210,7 @@ function PhotoGallery() {
 }
 
 function Venue() {
-  return <section id="venue" className="bg-soft px-5 py-24 sm:px-8 sm:py-32"><div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-[1.25fr_.75fr]"><div className="reveal overflow-hidden"><img src={wedding.images.venue} alt="The Ivory House garden set for the wedding ceremony" width={1600} height={1200} loading="lazy" className="aspect-[4/3] w-full object-cover transition duration-700 hover:scale-[1.02]" /></div><div className="reveal text-center md:text-left"><Eyebrow>The setting</Eyebrow><h2 className="font-display text-5xl">{wedding.venue.name}</h2><p className="mx-auto mt-5 max-w-xs text-sm leading-7 text-muted-foreground md:mx-0">A private colonial estate nestled between the hills and the southern coast.</p><address className="mt-7 font-display text-lg not-italic leading-8">{wedding.venue.address}</address><a href={wedding.venue.mapUrl} target="_blank" rel="noreferrer" className="mt-8 inline-flex min-h-12 items-center gap-3 border border-primary px-6 font-sans text-[0.62rem] uppercase tracking-[0.16em] text-primary transition hover:bg-primary hover:text-primary-foreground"><MapPin size={15} /> Open in Google Maps</a></div></div></section>;
+  return <section id="venue" className="bg-soft px-5 py-24 sm:px-8 sm:py-32"><div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-[1.25fr_.75fr]"><div className="reveal overflow-hidden"><img src={wedding.images.venue} alt="The Grand Walawwa garden set for the wedding ceremony" width={1600} height={1200} loading="lazy" className="aspect-[4/3] w-full object-cover transition duration-700 hover:scale-[1.02]" /></div><div className="reveal text-center md:text-left"><Eyebrow>The setting</Eyebrow><h2 className="font-display text-5xl">{wedding.venue.name}</h2><p className="mx-auto mt-5 max-w-md text-sm leading-7 text-muted-foreground md:mx-0">A timeless colonial villa surrounded by lush greenery in the heart of Kegalle, where old-world charm and quiet elegance set the scene for the beginning of our next chapter.  </p><address className="mt-7 font-display text-lg not-italic leading-8">{wedding.venue.address}</address><a href={wedding.venue.mapUrl} target="_blank" rel="noreferrer" className="mt-8 inline-flex min-h-12 items-center gap-3 border border-primary px-6 font-sans text-[0.62rem] uppercase tracking-[0.16em] text-primary transition hover:bg-primary hover:text-primary-foreground"><MapPin size={15} /> Open in Google Maps</a></div></div></section>;
 }
 
 function Rsvp() {
@@ -213,7 +222,7 @@ function Rsvp() {
     setError(""); setSubmitted(true);
   };
   return (
-    <section id="rsvp" className="px-5 py-24 sm:px-8 sm:py-32"><div className="mx-auto max-w-2xl"><SectionHeading eyebrow="Kindly reply by 1 July 2027">Will you celebrate with us?</SectionHeading>{submitted ? <div className="reveal mt-14 border-y border-border py-16 text-center" role="status"><Heart className="mx-auto text-primary" strokeWidth={1} /><h3 className="mt-6 font-display text-3xl">Thank you for your reply.</h3><p className="mt-3 text-sm text-muted-foreground">Your response has been noted for this preview.</p><Button variant="ghost" className="mt-6" onClick={() => setSubmitted(false)}>Edit response</Button></div> : <form onSubmit={submit} className="reveal mt-14 space-y-8" noValidate><div className="grid gap-8 sm:grid-cols-2"><Field label="Full name" name="name" required /><label className="block"><span className="field-label">Number of guests</span><select name="guests" className="field-input" defaultValue="1">{[1,2,3,4].map(n => <option key={n}>{n}</option>)}</select></label></div><fieldset><legend className="field-label mb-4">Attendance</legend><div className="grid grid-cols-2 gap-3"><label className="choice"><input type="radio" name="attendance" value="accept" className="peer sr-only" /><span className="choice-inner">Joyfully accept</span></label><label className="choice"><input type="radio" name="attendance" value="decline" className="peer sr-only" /><span className="choice-inner">Regretfully decline</span></label></div></fieldset><Field label="Dietary requirements (optional)" name="dietary" /><label className="block"><span className="field-label">A message for us (optional)</span><textarea name="message" rows={3} className="field-input resize-none" /></label>{error && <p className="text-center text-sm text-destructive" role="alert">{error}</p>}<div className="text-center"><Button type="submit" className="min-w-48">Send RSVP</Button></div></form>}</div></section>
+    <section id="rsvp" className="px-5 py-24 sm:px-8 sm:py-32"><div className="mx-auto max-w-2xl"><SectionHeading eyebrow="Kindly reply by 1 July 2027">Will you celebrate with us?</SectionHeading>{submitted ? <div className="reveal mt-14 border-y border-border py-16 text-center" role="status"><Heart className="mx-auto text-primary" strokeWidth={1} /><h3 className="mt-6 font-display text-3xl">Thank you for your reply.</h3><p className="mt-3 text-sm text-muted-foreground">Your response has been noted for this preview.</p><Button variant="ghost" className="mt-6" onClick={() => setSubmitted(false)}>Edit response</Button></div> : <form onSubmit={submit} className="reveal mt-14 space-y-8" noValidate><div className="grid gap-8 sm:grid-cols-2"><Field label="Full name" name="name" required /><label className="block"><span className="field-label">Number of guests</span><select name="guests" className="field-input" defaultValue="1">{[1, 2, 3, 4].map(n => <option key={n}>{n}</option>)}</select></label></div><fieldset><legend className="field-label mb-4">Attendance</legend><div className="grid grid-cols-2 gap-3"><label className="choice"><input type="radio" name="attendance" value="accept" className="peer sr-only" /><span className="choice-inner">Joyfully accept</span></label><label className="choice"><input type="radio" name="attendance" value="decline" className="peer sr-only" /><span className="choice-inner">Regretfully decline</span></label></div></fieldset><Field label="Dietary requirements (optional)" name="dietary" /><label className="block"><span className="field-label">A message for us (optional)</span><textarea name="message" rows={3} className="field-input resize-none" /></label>{error && <p className="text-center text-sm text-destructive" role="alert">{error}</p>}<div className="text-center"><Button type="submit" className="min-w-48">Send RSVP</Button></div></form>}</div></section>
   );
 }
 
